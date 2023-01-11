@@ -1,14 +1,14 @@
 import React from "react";
 
 const Player = (props) => {
-  const { className, color, bodyColor, armColor } = props;
+  const { color, bodyColor, armColor, height, width, iconType } = props;
 
   return (
     <>
-      <div className={className || "cursor-move"}>
+      {iconType === "jersey" ? (
         <svg
-          width="35px"
-          height="35px"
+          width={width || "35px"}
+          height={height || "35px"}
           viewBox="267 346 216 219"
           className="jersey-svg"
         >
@@ -86,7 +86,17 @@ const Player = (props) => {
             ></path>
           </g>
         </svg>
-      </div>
+      ) : (
+        <div
+          className={`w-[30px] h-[30px] rounded-full`}
+          style={{
+            backgroundColor: bodyColor,
+            border: `2px solid ${armColor}`,
+            height: height,
+            width: width,
+          }}
+        />
+      )}
     </>
   );
 };

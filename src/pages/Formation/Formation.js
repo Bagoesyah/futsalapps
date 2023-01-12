@@ -69,67 +69,73 @@ const Formation = () => {
     <>
       <section className="w-full my-[2rem]">
         <Container>
-          <div className="grid gap-[1.2rem] md:grid-cols-3 justify-center border bg-white">
-            <div className="w-[350px] h-[470px] field relative">
-              {positionPlayer?.map((item, i) => (
-                <Draggable
-                  defaultPosition={{ x: item.x, y: item.y }}
-                  bounds={"parent"}
-                  key={i}
-                >
-                  <div className="absolute cursor-move">
-                    {playerIcon ? (
-                      playerIcon.map((item) => (
+          <h1 className="text-xl md:text-3xl font-extrabold mb-3">
+            Football Formation Maker
+          </h1>
+          <div className="p-4 h-full gap-[1.2rem] grid md:grid-cols-3 justify-center border bg-white rounded-lg">
+            <div className="relative">
+              <div className="top-0 flex gap-3 md:justify-start justify-center order-1 mb-3">
+                <Button className=" bg-slate-900">Save as image</Button>
+                <Button className=" bg-slate-900">Export Link</Button>
+              </div>
+
+              <div className="w-[350px] h-[470px] field top-10">
+                {positionPlayer?.map((item, i) => (
+                  <Draggable
+                    defaultPosition={{ x: item.x, y: item.y }}
+                    bounds={"parent"}
+                    key={i}
+                  >
+                    <div className="absolute cursor-move">
+                      {playerIcon ? (
+                        playerIcon.map((item) => (
+                          <Player
+                            color={i + 1 === 1 && "#FFBF00"}
+                            bodyColor={bodyColor}
+                            armColor={armColor}
+                            iconType={item.name}
+                          />
+                        ))
+                      ) : (
                         <Player
                           color={i + 1 === 1 && "#FFBF00"}
                           bodyColor={bodyColor}
                           armColor={armColor}
-                          iconType={item.name}
+                          iconType={"jersey"}
                         />
-                      ))
-                    ) : (
-                      <Player
-                        color={i + 1 === 1 && "#FFBF00"}
-                        bodyColor={bodyColor}
-                        armColor={armColor}
-                        iconType={"jersey"}
-                      />
-                    )}
+                      )}
 
-                    <p
-                      className={`absolute inset-0 flex justify-center items-center text-md font-bold`}
-                      style={{ color: fontColor }}
-                    >
-                      {item.id}
-                    </p>
-                    <p
-                      className={`text-sm absolute bottom-0 right-1/2 translate-x-1/2 translate-y-full w-[100px] text-center text-white`}
-                    >
-                      {item.name || "Player"}
-                    </p>
-                    {item.icon && (
-                      <div className="text-sm absolute top-0 right-0 translate-x-1/2 translate-y-full">
-                        <Icons src={item.icon} width={20} />
-                      </div>
-                    )}
-                  </div>
-                </Draggable>
-              ))}
+                      <p
+                        className={`absolute inset-0 flex justify-center items-center text-md font-bold`}
+                        style={{ color: fontColor }}
+                      >
+                        {item.id}
+                      </p>
+                      <p
+                        className={`text-sm absolute bottom-0 right-1/2 translate-x-1/2 translate-y-full w-[100px] text-center text-white`}
+                      >
+                        {item.name || "Player"}
+                      </p>
+                      {item.icon && (
+                        <div className="text-sm absolute top-0 right-0 translate-x-1/2 translate-y-full">
+                          <Icons src={item.icon} width={20} />
+                        </div>
+                      )}
+                    </div>
+                  </Draggable>
+                ))}
+              </div>
             </div>
             {/* Option */}
             <div className="relative">
-              <div className="w-full md:py-2 md:pr-5 md:px-1 px-4 flex flex-col gap-4 overflow-y-scroll h-[470px]">
-                <div className="flex gap-3 md:justify-start justify-center order-1 mt-3">
-                  <Button className="bg-slate-900">Save as image</Button>
-                  <Button className="bg-slate-900">Export Link</Button>
-                </div>
+              <div className="w-full md:py-2 md:pr-5 md:px-1 px-4 flex flex-col gap-4 overflow-y-scroll h-[520px]">
                 <Tab.Group as="div" className="md:order-one order-last">
                   <Tab.List className="flex gap-[2rem]">
                     <TabsButton>Apperance</TabsButton>
                     <TabsButton>Player</TabsButton>
                   </Tab.List>
                   {/* apperance */}
-                  <Tab.Panels className="mt-[1rem]">
+                  <Tab.Panels className="mt-3">
                     <Tab.Panel>
                       <ColGroup>
                         <Label>Team Name</Label>
@@ -154,7 +160,7 @@ const Formation = () => {
                           options={Array(11)
                             .fill(null)
                             .map((item, i) => ({
-                              value: i + 1,
+                              value: i,
                               label: i + 1,
                             }))}
                         />
@@ -203,12 +209,14 @@ const Formation = () => {
                           ]}
                         />
                       </ColGroup>
-                      <div className="flex justify-between items-center gap-2 mb-5">
+                      {/* flex justify-between items-center */}
+                      <div className="gap-2">
                         <Label>Color</Label>
                         <ColGroup>
-                          <Menu as="div" className="relative flex">
+                          <Menu as="div" className="relative flex mt-3 gap-2">
+                            <Label>Primary:</Label>
                             <Menu.Button
-                              className={`w-[120px] h-6 border-[2px] border-black`}
+                              className={`w-[40px] h-6 border-2 border-black rounded-md`}
                               style={{ backgroundColor: `${bodyColor}` }}
                             ></Menu.Button>
                             <Menu.Items className="absolute -translate-x-1/2 top-0 translate-y-[30%] z-[999]">
@@ -222,9 +230,10 @@ const Formation = () => {
                               </Menu.Item>
                             </Menu.Items>
                           </Menu>
-                          <Menu as="div" className="relative flex">
+                          <Menu as="div" className="relative flex gap-2 ">
+                            <Label>Secondary:</Label>
                             <Menu.Button
-                              className={`w-[120px] h-6 border-[2px] border-black`}
+                              className={`w-[40px] h-6 border-2 border-black rounded-md`}
                               style={{ backgroundColor: `${armColor}` }}
                             ></Menu.Button>
                             <Menu.Items className="absolute -translate-x-1/2 top-0 translate-y-[30%] z-[2]">
@@ -237,9 +246,10 @@ const Formation = () => {
                               </Menu.Item>
                             </Menu.Items>
                           </Menu>
-                          <Menu as="div" className="relative flex">
+                          <Menu as="div" className="relative flex gap-2 ">
+                            <Label>Nomor:</Label>
                             <Menu.Button
-                              className={`w-[120px] h-6 border-[2px] border-black`}
+                              className={`w-[40px] h-6 border-2 border-black rounded-md`}
                               style={{ backgroundColor: `${fontColor}` }}
                             ></Menu.Button>
                             <Menu.Items className="absolute -translate-x-1/2 top-0 translate-y-[30%] z-[2]">
@@ -258,7 +268,7 @@ const Formation = () => {
                   </Tab.Panels>
 
                   {/* Player */}
-                  <Tab.Panels className="mt-[2rem]">
+                  <Tab.Panels className="mt-3">
                     <Tab.Panel>
                       <RowGroup>
                         <Label className="w-[30px]">No</Label>
@@ -297,13 +307,24 @@ const Formation = () => {
               </div>
             </div>
             <div className="w-full md:p-2 px-5">
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga
-                quisquam earum recusandae atque pariatur magni quam
-                reprehenderit tempore ab corporis, excepturi quidem nulla
-                possimus ea eum placeat porro optio praesentium.
+              <h1 className="font-bold text-3xl">
+                Cara Membuat Formasi Pemain Football
+              </h1>
+              <p className="font-semibold leading-8 capitalize">
+                <br /> 1. Masukkan nama tim Anda <br />
+                2. Pilih formasi Anda bisa buat formasi sendiri atau pilih dari
+                formasi yang telah ditentukan sebelumnya, termasuk 4-3-3, 4-4-2,
+                4-2-3-1, dll. <br /> 3. Tentukan jumlah pemain regu anda <br />
+                4. Pilih jenis tampilan pemain <br /> 5. Pilih warna regu Anda.
+                Ada tiga kategori warna: warna primer, warna sekunder dan warna
+                nomor. <br /> 6. Mulailah memodifikasi tim Anda! Ubah nama dan
+                nomor setiap pemain serta tambah keterangan pemain seperti kartu
+                kuning dan merah dengan mengkliknya.
               </p>
             </div>
+          </div>
+          <div className="text-center text-xs font-bold mt-2">
+            <p>Copyright 2023, Football Formation Maker</p>
           </div>
         </Container>
       </section>

@@ -2,15 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans&display=swap");
+
 @layer base {
   body {
     @apply bg-slate-200;
+    font-family: "PT Sans", sans-serif;
   }
 }
 
 @layer components {
   .container-md {
-    @apply mx-[7.5rem];
+    @apply mx-[14rem];
   }
 
   .container-sm {
@@ -20,4 +23,5 @@
 .field {
   background: url("./field-green.webp") no-repeat;
   background-size: 100% 470px;
+  border-radius: 5px;
 }

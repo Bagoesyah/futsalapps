@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import Container from "../../components/Container";
 import Player from "../../components/Player/Player";
 import Draggable from "react-draggable";
 import { Menu, Tab } from "@headlessui/react";
 import { CompactPicker } from "react-color";
+import * as htmlToImage from "html-to-image";
 import TabsButton from "../../components/Tabs/TabsButton";
 import Button from "../../components/Button";
 import ColGroup from "../../components/Form/ColGroup";
@@ -102,6 +103,26 @@ const Formation = () => {
   useEffect(() => {
     console.log(positionPlayer);
   }, [positionPlayer]);
+
+  const refFormation = useRef(null);
+
+  const capture = useCallback(() => {
+    if (refFormation.current === null) {
+      return;
+    }
+
+    htmlToImage
+      .toPng(refFormation.current, { cacheBust: true })
+      .then(function (dataUrl) {
+        var link = document.createElement("a");
+        link.download = "Formation.png";
+        link.href = dataUrl;
+        link.click();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [refFormation]);
   return (
     <>
       <section className="w-full my-[2rem]">
@@ -112,11 +133,16 @@ const Formation = () => {
           <div className="p-4 h-full gap-[1.2rem] grid md:grid-cols-3 justify-center border bg-white rounded-lg">
             <div className="relative">
               <div className="top-0 flex gap-3 md:justify-start justify-center order-1 mb-3">
-                <Button className=" bg-slate-900">Save as image</Button>
+                <Button className=" bg-slate-900" onClick={() => capture()}>
+                  Save as image
+                </Button>
                 <Button className=" bg-slate-900">Export Link</Button>
               </div>
 
-              <div className="w-[350px] h-[470px] field top-10">
+              <div
+                ref={refFormation}
+                className="w-[350px] h-[470px] field top-10"
+              >
                 {positionPlayer?.map((item, i) => (
                   <Draggable
                     axis="both"

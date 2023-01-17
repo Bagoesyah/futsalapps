@@ -6,14 +6,19 @@ import { Menu, Tab } from "@headlessui/react";
 import { CompactPicker } from "react-color";
 import TabsButton from "../../components/Tabs/TabsButton";
 import Button from "../../components/Button";
-import { defaultOffset, positionDefault } from "../../utils/DefaultPos";
 import ColGroup from "../../components/Form/ColGroup";
 import Label from "../../components/Form/Label";
 import Input from "../../components/Form/Input";
 import RowGroup from "../../components/Form/RowGroup";
 import ReactSelect from "react-select";
-import { IconOption } from "../../utils/Options";
+import { IconOption, formationOption } from "../../utils/Options";
 import Icons from "../../components/Icons";
+import {
+  defaultOffset,
+  formation433,
+  formation442,
+  positionDefault,
+} from "../../utils/Position";
 
 const Formation = () => {
   // eslint-disable-next-line no-unused-vars
@@ -42,6 +47,30 @@ const Formation = () => {
     setPositionPlayer(newArr);
   };
 
+  const handleFormation = (e) => {
+    if (!e.value) return false;
+    const dataPlayer = [...positionPlayer];
+    if (e.value === "433") {
+      formation433.forEach((item, i) => {
+        const findPlayer = dataPlayer.find(
+          (item, indexPlayer) => indexPlayer === i
+        );
+        findPlayer.x = item.x;
+        findPlayer.y = item.y;
+      });
+    }
+    if (e.value === "442") {
+      formation442.forEach((item, i) => {
+        const findPlayer = dataPlayer.find(
+          (item, indexPlayer) => indexPlayer === i
+        );
+        findPlayer.x = item.x;
+        findPlayer.y = item.y;
+      });
+    }
+    setPositionPlayer(dataPlayer);
+  };
+
   const handleChangePlayer = (e, id, attr) => {
     const player = [...positionPlayer];
     const findPlayer = player.find((item) => item.id === id);
@@ -56,6 +85,14 @@ const Formation = () => {
       }
     }
 
+    setPositionPlayer(player);
+  };
+
+  const handlePlayerPosition = (id, x, y) => {
+    const player = [...positionPlayer];
+    const findPlayer = player.find((item) => item.id === id);
+    findPlayer.x = x;
+    findPlayer.y = y;
     setPositionPlayer(player);
   };
 
@@ -82,8 +119,13 @@ const Formation = () => {
               <div className="w-[350px] h-[470px] field top-10">
                 {positionPlayer?.map((item, i) => (
                   <Draggable
+                    axis="both"
+                    position={{ x: item.x, y: item.y }}
                     defaultPosition={{ x: item.x, y: item.y }}
                     bounds={"parent"}
+                    onStop={(e, data) =>
+                      handlePlayerPosition(item.id, data.x, data.y)
+                    }
                     key={i}
                   >
                     <div className="absolute cursor-move">
@@ -94,6 +136,7 @@ const Formation = () => {
                             bodyColor={bodyColor}
                             armColor={armColor}
                             iconType={item.name}
+                            key={i}
                           />
                         ))
                       ) : (
@@ -149,7 +192,8 @@ const Formation = () => {
                       <ColGroup>
                         <Label>Formation</Label>
                         <ReactSelect
-                          options={[{ label: "4-4-3", value: "4-4-3" }]}
+                          options={formationOption}
+                          onChange={(e) => handleFormation(e)}
                         />
                       </ColGroup>
                       <ColGroup>

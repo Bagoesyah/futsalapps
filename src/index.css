@@ -13,15 +13,24 @@
 
 @layer components {
   .container-md {
-    @apply mx-[14rem];
+    /* @apply mx-[14rem]; */
+    @apply w-full;
   }
 
   .container-sm {
-    @apply mx-[1.25rem];
+    /* @apply mx-[1.25rem]; */
+    @apply w-full p-4;
   }
 }
+
+.field-sm {
+  background: url("./field-green.webp") no-repeat;
+  background-size: 100% 480px;
+  border-radius: 5px;
+}
+
 .field {
   background: url("./field-green.webp") no-repeat;
-  background-size: 100% 470px;
+  background-size: 378px 480px;
   border-radius: 5px;
 }

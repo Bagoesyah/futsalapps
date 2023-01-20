@@ -22,7 +22,7 @@ const NavItem = (props) => {
 const Navbar = () => {
   return (
     <header className="sticky top-0 w-full bg-gray-900 z-[9999]">
-      <nav className="flex gap-[1.25rem] h-[70px] items-center md:container-md">
+      <nav className="flex px-4 md:px-8 gap-1 md:gap-[1.25rem] h-[70px] items-center md:container-md">
         <NavItem name="Home" url="/" className="text" />
         <NavItem name="formation" url="/formation" className="text" />
       </nav>
